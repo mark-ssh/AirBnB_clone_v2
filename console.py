@@ -80,7 +80,6 @@ class HBNBCommand(cmd.Cmd):
                 continue
             attr = split_str[0]
             value = split_str[1]
-            print(value)
             if value.startswith('"'):
                 value = value.strip('"')
                 value = value.replace('_', ' ')
