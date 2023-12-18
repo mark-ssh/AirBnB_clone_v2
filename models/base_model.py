@@ -1,58 +1,62 @@
 #!/usr/bin/python3
-"""This module defines a base class for all models in our hbnb clone"""
+"""This module defines a base class for all models"""
+from datetime import datetime
 import uuid
 import models
-from datetime import datetime
+from sqlalchemy import Column, String, ForeignKey, DateTime
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, String, DateTime
-
-if models.storage_t == "db":
+from os import getenv
+if getenv('HBNB_TYPE_STORAGE') == 'db':
     Base = declarative_base()
 else:
     Base = object
 
 class BaseModel:
-    """A base class for all hbnb models"""
-    def __init__(self, *args, **kwargs):
-        """Instantiates a new model"""
-        self.id = str(uuid.uuid4())
-        self.created_at = datetime.today()
-        self.updated_at = datetime.today()
-        if len(kwargs) != 0:
-            for key, value in kwargs.items():
-                if key == "updated_at" or key == "created_at":
-                    self.__dict__[key] = datetime.strptime(value, time)
-                else:
-                    self.__dict__[key] = value
-        else:
-            self.id = str(uuid.uuid4())
-            self.created_at = datetime.now()
-            self.updated_at = self.created_at
-            models.storage.new(self)
-            models.storage.save()
+    """The base class for all storage objects in this project"""
+    id = Column(String(60), nullable=False, primary_key=True)
+    created_at = Column(DateTime(), nullable=False, default=datetime.now())
+    updated_at = Column(DateTime(), nullable=False, default=datetime.now())
 
-    def __str__(self):
-        """Returns a string representation of the instance"""
-        cls = (str(type(self)).split('.')[-1]).split('\'')[0]
-        return '[{}] ({}) {}'.format(cls, self.id, self.__dict__)
+    def __init__(self, *args, **kwargs):
+        """initialize class object"""
+        if len(args) > 0:
+            for k in args[0]:
+                setattr(self, k, args[0][k])
+        else:
+            self.created_at = datetime.now()
+            self.id = str(uuid.uuid4())
+
+        if kwargs is not None:
+            for k in kwargs.keys():
+                setattr(self, k, kwargs[k])
+        self.save()
+        """
+        for k in kwargs:
+            print("kwargs: {}: {}".format(k, kwargs[k]))
+        """
 
     def save(self):
-        """Updates updated_at with current time when instance is changed"""
+        """method to update self"""
         self.updated_at = datetime.now()
         models.storage.new(self)
         models.storage.save()
 
+    def __str__(self):
+        """edit string representation"""
+        return "[{}] ({}) {}".format(type(self)
+                                     .__name__, self.id, self.__dict__)
+
     def to_dict(self):
-        """Convert instance into dict format"""
-        dict_copy = self.__dict__.copy()
-        dict_copy["created_at"] = str(dict_copy["created_at"])
-        if ("_sa_instance_state" in dict_copy):
-            dict_copy.pop('_sa_instance_state', None)
-        if ("updated_at" in dict_copy):
-            dict_copy["updated_at"] = str(dict_copy["updated_at"])
-        dict_copy["__class__"] = type(self).__name__
-        return dict_copy
-    
+        """convert to json"""
+        dupe = self.__dict__.copy()
+        dupe["created_at"] = str(dupe["created_at"])
+        if ("_sa_instance_state" in dupe):
+            dupe.pop('_sa_instance_state', None)
+        if ("updated_at" in dupe):
+            dupe["updated_at"] = str(dupe["updated_at"])
+        dupe["__class__"] = type(self).__name__
+        return dupe
+
     def delete(self):
         """deleting current instance"""
         models.storage.delete(self)
