@@ -6,7 +6,7 @@ State Class:
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship, backref
-from models import storage
+import models
 from os import environ
 
 
@@ -22,7 +22,7 @@ class State(BaseModel, Base):
     else:
         @property
         def cities(self):
-            stor = storage.all('City').values()
+            stor = models.storage.all('City').values()
             return ([a for a in stor if self.id == a.state_id])
 
         name = ""

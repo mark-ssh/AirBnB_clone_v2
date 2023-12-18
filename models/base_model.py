@@ -8,7 +8,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from os import environ
 
 
-if getenv('HBNB_TYPE_STORAGE') == 'db':
+if environ.get('HBNB_TYPE_STORAGE') == 'db':
     Base = declarative_base()
 else:
     Base = object

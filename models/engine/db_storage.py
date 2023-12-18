@@ -4,7 +4,7 @@ Creating a new storage engine that
 manages database storage
 """
 from sqlalchemy import create_engine
-from os import getenv
+from os import environ
 from sqlalchemy.orm import sessionmaker, scoped_session
 from models.base_model import Base
 from models.user import User
@@ -28,10 +28,10 @@ class DBStorage:
         """
         self.__engine = create_engine(
                 'mysql+mysqldb://{}:{}@{}/{}'.format(
-                 getenv('HBNB_MYSQL_USER'),
-                 getenv('HBNB_MYSQL_PWD'),
-                 getenv('HBNB_MYSQL_HOST'),
-                 getenv('HBNB_MYSQL_DB')))
+                    environ.get('HBNB_MYSQL_USER'),
+                    environ.get('HBNB_MYSQL_PWD'),
+                    environ.get('HBNB_MYSQL_HOST'),
+                    environ.get('HBNB_MYSQL_DB')), pool_pre_ping=True)
         self.__my_list = {
                 "User": User,
                 "State": State,
@@ -40,7 +40,7 @@ class DBStorage:
                 "Place": Place,
                 "Reivew": Review
                 }
-        if getenv('HBNB_MYSQL_ENV') == "test":
+        if environ.get('HBNB_MYSQL_ENV') == "test":
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
@@ -82,9 +82,7 @@ class DBStorage:
         reloads the current DB
         """
         Base.metadata.create_all(self.__engine)
-        self.__session = scoped_session(
-                sessionmaker(bind=self.__engine)
-                )
+        self.__session = scoped_session(sessionmaker(bind=self.__engine, expire_on_commit=False))
 
     def close(self):
         """
