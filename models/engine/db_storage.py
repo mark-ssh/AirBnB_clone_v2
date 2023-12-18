@@ -17,8 +17,7 @@ from models.review import Review
 
 class DBStorage:
     """
-    Class to connect the mysql database to
-    a flask web application
+    Class to connect the mysql database
     """
     __engine = None
     __session = None
