@@ -24,7 +24,5 @@ class State(BaseModel, Base):
         def cities(self):
             stor = storage.all('City').values()
             return ([a for a in stor if self.id == a.state_id])
-        name = ""
 
-    def __init__(self, *args, **kwargs):
-        super(State, self).__init__(*args, **kwargs)
+        name = ""

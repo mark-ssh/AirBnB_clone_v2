@@ -7,6 +7,7 @@ from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, ForeignKey
 from os import getenv
 
+
 class City(BaseModel, Base):
     """
     Represents Cities available to users
@@ -18,6 +19,3 @@ class City(BaseModel, Base):
     else:
         name = ""
         state_id = ""
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
