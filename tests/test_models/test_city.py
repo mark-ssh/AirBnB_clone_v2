@@ -1,24 +1,35 @@
 #!/usr/bin/python3
-""" """
-from tests.test_models.test_base_model import test_basemodel
+""" holds class City"""
+import unittest
+from datetime import datetime
+from models.amenity import Amenity
+from models.base_model import BaseModel
 from models.city import City
-
+from models.__init__ import storage
+from models.place import Place
+from models.review import Review
+from models.state import State
+from models.user import User
+from console import HBNBCommand
 
 class test_City(test_basemodel):
-    """ """
+    """
+    Test the city model class
+    """
 
-    def __init__(self, *args, **kwargs):
-        """ """
-        super().__init__(*args, **kwargs)
-        self.name = "City"
-        self.value = City
+    def setUp(self):
+        self.cli = HBNBCommand()
+        self.model = City()
+        self.model.save()
 
-    def test_state_id(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.state_id), str)
+    def tearDown(self):
+        self.cli.do_destroy("City " + self.model.id)
 
-    def test_name(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.name), str)
+    def test_var_initialization(self):
+        self.assertTrue(hasattr(self.model, "name"))
+        self.assertTrue(hasattr(self.model, "state_id"))
+        self.assertEqual(self.model.name, "")
+        self.assertEqual(self.model.state_id, "")
+
+if __name__ == "__main__":
+    unittest.main()
