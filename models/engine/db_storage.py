@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-Creating a new engine that
+Creating a new storage engine that
 manages database storage
 """
 from sqlalchemy import create_engine
