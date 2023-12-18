@@ -5,7 +5,7 @@ import uuid
 import models
 from sqlalchemy import Column, String, ForeignKey, DateTime
 from sqlalchemy.ext.declarative import declarative_base
-from os import getenv
+from os import environ
 
 
 if getenv('HBNB_TYPE_STORAGE') == 'db':
@@ -17,7 +17,7 @@ else:
 class BaseModel:
     """The base class for all storage objects in this project"""
 
-    if getenv("HBNB_TYPE_STORAGE") == 'db':
+    if environ.get("HBNB_TYPE_STORAGE") == 'db':
         id = Column(String(60), primary_key=True, nullable=False)
         created_at = Column(DateTime(), default=datetime.utcnow(),
                             nullable=False)

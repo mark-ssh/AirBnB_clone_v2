@@ -7,7 +7,7 @@ from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship, backref
 from models import storage
-from os import getenv
+from os import environ
 
 
 class State(BaseModel, Base):
@@ -15,7 +15,7 @@ class State(BaseModel, Base):
     Class to handle state objecs
     Cities and places inherit from this class
     """
-    if getenv("HBNB_TYPE_STORAGE") == "db":
+    if environ.get("HBNB_TYPE_STORAGE") == "db":
         __tablename__ = "states"
         name = Column(String(128), nullable=False)
         cities = relationship("City", cascade="delete", backref="state")
