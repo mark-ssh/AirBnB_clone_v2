@@ -6,6 +6,7 @@ import models
 from sqlalchemy import Column, String, ForeignKey, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 from os import getenv
+
 if getenv('HBNB_TYPE_STORAGE') == 'db':
     Base = declarative_base()
 else:
@@ -13,9 +14,11 @@ else:
 
 class BaseModel:
     """The base class for all storage objects in this project"""
-    id = Column(String(60), nullable=False, primary_key=True)
-    created_at = Column(DateTime(), nullable=False, default=datetime.now())
-    updated_at = Column(DateTime(), nullable=False, default=datetime.now())
+    
+    if getenv("HBNB_TYPE_STORAGE") == 'db':
+        id = Column(String(60), nullable=False, primary_key=True)
+        created_at = Column(DateTime(), nullable=False, default=datetime.now())
+        updated_at = Column(DateTime(), nullable=False, default=datetime.now())
 
     def __init__(self, *args, **kwargs):
         """initialize class object"""
