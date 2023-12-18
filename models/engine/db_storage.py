@@ -52,10 +52,11 @@ class DBStorage:
             for x in self.__my_list.values():
                 if self.__session.query(x).all():
                     for item in self.__session.query(x).all():
-                        new_dict[item.id] = item
+                        new_dict[f"{x.__name__}.{item.id}"] = item.to_dict()
         else:
-            for item in self.__session.query(self.__my_list[cls]):
-                new_dict[item.id] = item
+            for item in self.__session.query(self.__my_list[cls]).all():
+                new_dict[f"{self.__my_list[cls].__name__}.{item.id}"]\
+                    = item.to_dict()
         return (new_dict)
 
     def new(self, obj):
@@ -82,10 +83,12 @@ class DBStorage:
         reloads the current DB
         """
         Base.metadata.create_all(self.__engine)
-        self.__session = scoped_session(sessionmaker(bind=self.__engine, expire_on_commit=False))
+        self.__session = scoped_session(sessionmaker(bind=self.__engine,
+                                                     expire_on_commit=False))
 
     def close(self):
         """
         Closes and removes the session
         """
-        self.__session.remove()
+        self.__session.__class__.close(self.__session)
+        self.reload()
