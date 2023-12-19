@@ -35,12 +35,12 @@ class Place(BaseModel, Base):
         longitude = 0.0
         amenity_ids = []
 
-    @property
-    def reviews(self):
-        """attribute for FileStorage that returns list of Review instances"""
-        values_review = models.storage.all("Review").values()
-        review_list = []
-        for review in values_review:
-            if review.place_id == self.id:
-                review_list.append(review)
-        return review_list
+        @property
+        def reviews(self):
+            """attribute for FileStorage that returns list of Review instances"""
+            values_review = models.storage.all("Review").values()
+            review_list = []
+            for review in values_review:
+                if review.place_id == self.id:
+                    review_list.append(review)
+            return review_list
