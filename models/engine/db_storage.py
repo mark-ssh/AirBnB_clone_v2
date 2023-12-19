@@ -38,7 +38,7 @@ class DBStorage:
                 "City": City,
                 "Amenity": Amenity,
                 "Place": Place,
-                "Reivew": Review
+                "Review": Review
                 }
         if environ.get('HBNB_MYSQL_ENV') == "test":
             Base.metadata.drop_all(self.__engine)
