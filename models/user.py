@@ -1,8 +1,5 @@
 #!/usr/bin/python3
-"""
-User Class:
-    Inherits from BaseModel and Base
-"""
+"""This module defines a class User"""
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship, backref
