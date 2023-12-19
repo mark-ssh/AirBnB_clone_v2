@@ -38,5 +38,5 @@ class Place(BaseModel, Base):
         @property
         def reviews(self):
             """attribute for FileStorage that returns list of Review instances"""
-            stor = models.storage.all("Review").values()
+            stor = models.storage.all(Review).values()
             return ([a for a in stor if self.id == a.place_id])
