@@ -19,9 +19,9 @@ class BaseModel:
 
     if environ.get("HBNB_TYPE_STORAGE") == 'db':
         id = Column(String(60), primary_key=True, nullable=False)
-        created_at = Column(DateTime(), default=datetime.utcnow(),
+        created_at = Column(DateTime, default=datetime.utcnow(),
                             nullable=False)
-        updated_at = Column(DateTime(), default=datetime.utcnow(),
+        updated_at = Column(DateTime, default=datetime.utcnow(),
                             nullable=False)
 
     def __init__(self, *args, **kwargs):
@@ -30,8 +30,7 @@ class BaseModel:
             for k in kwargs.keys():
                 if k in ('created_at', 'updated_at'):
                     setattr(self, k,
-                            datetime.strptime(kwargs[k],
-                                              '%Y-%m-%dT%H:%M:%S.%f'))
+                            datetime.strptime(kwargs[k], '%Y-%m-%dT%H:%M:%S.%f'))
                 elif k == '__class__':
                     continue
                 else:
@@ -55,11 +54,11 @@ class BaseModel:
     def to_dict(self):
         """convert to json"""
         dupe = self.__dict__.copy()
-        dupe["created_at"] = str(dupe["created_at"])
+        dupe["created_at"] = getattr(self, "created_at").isoformat()
         if ("_sa_instance_state" in dupe):
-            dupe.pop('_sa_instance_state', None)
+            dupe.pop('_sa_instance_state')
         if ("updated_at" in dupe):
-            dupe["updated_at"] = str(dupe["updated_at"])
+            dupe["updated_at"] = getattr(self, "updated_at").isoformat()
         dupe["__class__"] = type(self).__name__
         return dupe
 
