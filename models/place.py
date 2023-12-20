@@ -1,5 +1,4 @@
-
-0;276;0c#!/usr/bin/python3
+#!/usr/bin/python3
 """ Place Module for HBNB project """
 from models.base_model import BaseModel, Base
 import sqlalchemy
@@ -60,10 +59,10 @@ class Place(BaseModel, Base):
         def amenities(self):
             """Getter attribute to retrieve associated amenities"""
             stor = models.storage.all('Amenity').values()
-            return ([a for a in stor if a.id in self.amenity_ids])
+            return ([a for a in stor if a in self.amenity_ids])
 
         @amenities.setter
         def amenities(self, obj):
             """Setter attribute that adds amenities to the list amenity_ids"""
-            if isinstance(obj,models.storage.all('Amenity')):
+            if isinstance(obj, Amenity):
                 amenity_ids.append(obj.id)
