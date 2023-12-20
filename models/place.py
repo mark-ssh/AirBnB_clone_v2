@@ -58,11 +58,11 @@ class Place(BaseModel, Base):
         @property
         def amenities(self):
             """Getter attribute to retrieve associated amenities"""
-            stor = models.storage.all(Amenity).values()
+            stor = models.storage.all('Amenity').values()
             return ([a for a in stor if a.id in self.amenity_ids])
 
         @amenities.setter
         def amenities(self, obj):
             """Setter attribute that adds amenities to the list amenity_ids"""
-            if isinstance(obj, Amenity):
+            if isinstance(obj,models.storage.all('Amenity')):
                 amenity_ids.append(obj.id)
