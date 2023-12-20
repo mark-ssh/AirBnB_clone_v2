@@ -60,7 +60,7 @@ class Place(BaseModel, Base):
         def amenities(self):
             """Getter attribute to retrieve associated amenities"""
             stor = models.storage.all('Amenity').values()
-            return ([a for a in stor if a in self.amenity_ids])
+            return ([a for a in stor if a.id in self.amenity_ids])
 
         @amenities.setter
         def amenities(self, obj):
