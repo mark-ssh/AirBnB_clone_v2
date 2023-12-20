@@ -64,5 +64,5 @@ class Place(BaseModel, Base):
         @amenities.setter
         def amenities(self, obj):
             """Setter attribute that adds amenities to the list amenity_ids"""
-            if isinstance(obj, Amenity):
+            if isinstance(obj, models.storage.all('Amenity')):
                 amenity_ids.append(obj.id)
