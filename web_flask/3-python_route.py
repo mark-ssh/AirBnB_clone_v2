@@ -35,5 +35,18 @@ def c_is(text):
     """
     return ("C {:s}".format(text.replace("_", " ")))
 
+
+@app.route('/python/', strict_slashes=False)
+@app.route('/python', strict_slashes=False)
+@app.route('/python/<text>')
+def python_is(text="is cool"):
+
+    """
+    Returns the route /python/<text>
+    where <value> is any URI that the user requests
+    """
+    return ("Python {:s}".format(text.replace("_", " ")))
+
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=None)
